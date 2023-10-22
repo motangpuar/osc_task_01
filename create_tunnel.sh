@@ -13,10 +13,13 @@ create_tunnel() {
     ip link add tun_cu-amf type veth
     ip link add tun_du-cu type veth
     ip link add tun_rf-ue type veth
+    ip link add tun_ue-rf type veth
     
+    ip addr add 192.168.34.12/24 dev tun_cu-amf
     ip addr add 192.168.35.12/24 dev tun_cu-du
     ip addr add 192.168.35.13/24 dev tun_du-cu
-    ip addr add 192.168.34.12/24 dev tun_cu-amf
+    ip addr add 192.168.35.14/24 dev tun_rf-ue
+    ip addr add 192.168.35.15/24 dev tun_ue-rf
     #ip addr add 192.168.34.12/24 dev tun_cu-amf
     
     ip link set tun_cu-du master oai_br0
@@ -26,6 +29,8 @@ create_tunnel() {
     ip link set up dev tun_cu-du
     ip link set up dev tun_du-cu
     ip link set up dev tun_cu-amf
+    ip link set up dev tun_rf-ue
+    ip link set up dev tun_ue-rf
 }
 
 clean_tunnel() {
@@ -33,6 +38,7 @@ clean_tunnel() {
     ip link del tun_du-cu
     ip link del tun_cu-amf
     ip link del tun_rf-ue
+    ip link del tun_ue-rf
 }
 
 if [ "$#" -eq 0 ]
